@@ -1,7 +1,7 @@
 ################################
 Bayesian Neural Network Pruning
 ################################
-.. image:: Logo_Bprune.jpg
+.. image:: Logo_Bprune.png
     :width: 200px
     :align: center
     :height: 100px
