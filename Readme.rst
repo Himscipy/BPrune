@@ -36,7 +36,7 @@ If you are using a pip installation, simply do
 
 .. code-block:: bash
 
-   python3.5 -m pip install paryopt
+   python3.5 -m pip install BPrune
 
 
 How to use Bprune?
