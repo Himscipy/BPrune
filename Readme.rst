@@ -25,16 +25,19 @@ Installation Instruction:
 --------------------------
 
 - Before installtion ensure that you have a working Tensorflow and Tensorflow probability working environment.  
-- The installation can be done either after git cloning as follows:
 
-```
-python install -r requirement.txt
-python install setup.py
-```  
-- Or can be done using pip as 
-```
-pip install Bprune
-```
+.. code-block:: bash
+
+   python3.5 install -r requirements.txt
+   python3.5 install setup.py
+
+
+If you are using a pip installation, simply do
+
+.. code-block:: bash
+
+   python3.5 -m pip install paryopt
+
 
 How to use Bprune?
 ------------------
