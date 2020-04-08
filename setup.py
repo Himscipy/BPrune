@@ -1,14 +1,14 @@
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
 setup(
-  name = 'BPrune',         
-  packages = ['BPrune'],   
+  name = 'bprune',         
+  packages = find_packages(),   
   version = '0.1',      
   license='MIT',
-  package_data={'BPrune': ['src/*.py'] },
+  package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
   author = 'Himanshu Sharma',                   # Type in your name
@@ -21,7 +21,6 @@ setup(
           'scipy',
           'pandas',
           'seaborn',
-          'pickle',
           'tensorflow',
           'tensorflow-probability'
       ],

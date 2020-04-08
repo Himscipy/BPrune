@@ -6,8 +6,7 @@ import tensorflow as tf
 import numpy as np
 import time
 import pickle 
-from src.Viz_Plotting import *
-
+import src.Viz_Plotting 
 
 class Prune_Model:
     def __init__(self, FLAGS, Sess, Images, Labels):
