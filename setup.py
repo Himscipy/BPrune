@@ -1,9 +1,15 @@
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
 setup(
   name = 'BPrune',         
   packages = ['BPrune'],   
   version = '0.1',      
-  license='MIT',        
+  license='MIT',
+  package_data={'BPrune': ['src/*.py'] },
+  include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
   author = 'Himanshu Sharma',                   # Type in your name
   author_email = 'himanshu90sharma@gmail.com',      # Type in your E-Mail
@@ -18,8 +24,6 @@ setup(
           'pickle',
           'tensorflow',
           'tensorflow-probability'
-          'mpi4py',
-          'horovod',
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
@@ -30,5 +34,7 @@ setup(
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7.6',
+    
   ],
 )
