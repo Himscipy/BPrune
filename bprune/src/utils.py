@@ -2,47 +2,75 @@ import numpy as np
 import tensorflow as tf
 from absl import flags
 import os
+import argparse
 from tensorflow.python.keras.datasets.cifar import load_batch
+from tensorflow.python.keras import backend as K
 import tensorflow_probability as tfp
 tfd = tfp.distributions
 
 class Initialize:
     def __init__(self):
         super().__init__()
+        
+
+    # def FlagParser(self):
+    #     flags.DEFINE_string("data_dir",
+    #                 default=os.path.join('./results',
+    #                                      "bayesian_neural_network/data/"),
+    #                 help="Directory where data is stored (if using real data).")
+    #     flags.DEFINE_string("model_dir",
+    #         default='/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/BNN_5BL_Scaling/results/bayesian_VGG_Data_8rank',
+    #         help="Directory to put the model's fit.")
+    #     flags.DEFINE_integer("num_monte_carlo", default=200,help="Network draws to compute predictive probabilities.")
+    #     flags.DEFINE_integer("batch_size", default=64,help="Define the batch size for test data")
+    #     flags.DEFINE_boolean("subtract_pixel_mean",default=True,help="Boolean for normalizing the images (used for CIFAR10)")
+    #     flags.DEFINE_bool("fake_data",default=None,help="If true, uses fake data. Defaults to real data.")
+    #     flags.DEFINE_string("data_path",default="/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/cifar-10-batches-py",help="Path to load data  from directory")
+    #     flags.DEFINE_integer('num_intra', default=128,help='Intra thread num_intra')
+    #     flags.DEFINE_integer('num_inter', default=1,help='num_inter')
+    #     flags.DEFINE_bool('cluster',default=False,help='Define the run in the')
+    #     flags.DEFINE_integer('kmp_blocktime', default=0,help='KMP BLOCKTIME')
+    #     flags.DEFINE_string('kmp_affinity', default='granularity=fine,verbose,compact,1,0',help='KMP AFFINITY')
+    #     flags.DEFINE_bool('Verbose',default=False,help='Verbosre to print extra details about the model')
+    #     flags.DEFINE_bool('Modify_Weights',default=False,help='Turn on/off the weight modification method Currently supports only second last Layer of VGG-16')
+    #     flags.DEFINE_bool('Plotting',default=False,help='Turn on/off the plotting')
+    #     flags.DEFINE_string('model_ckpt',default='model.ckpt-0.meta',help='Checkpoint step to restore the weights')
+    #     flags.DEFINE_integer('iterations', default=1,help=' Number of iterations to perform')
+    #     flags.DEFINE_float('Thres_val',default=10.0, help='Value of Threshold to use at restart')
+    #     flags.DEFINE_bool('Per_Prune',default=False,help='Turn on/off the Percent_Prune')
+    #     flags.DEFINE_bool('CIFAR10',default=False,help='Data flag to use CIFAR10')
+    #     flags.DEFINE_bool('MNIST_BIGDATA',default=False,help='Data flag to use MNIST transform data')
+
+    #     return flags
+
+    def ArgParser(self):
+        parser = argparse.ArgumentParser(fromfile_prefix_chars='@ArgFile.txt', description="Bayesian neural network using tensorflow_probability")
+        
+        parser.add_argument("--data_dir",type=str, default=os.path.join('./results','/BNN_Run/data/'))
+        parser.add_argument("--model_dir",type=str,default='/home/hsharma/WORK/Project_BNN/Theta_data/bayesian_VGG_Data_8rank/train_logs/')
+        parser.add_argument("--data_path",type=str,default='/home/hsharma/WORK/Project_BNN/bnn_horovod/TFP_CIFAR10/cifar-10-batches-py')
+        parser.add_argument("--model_ckpt",type=str,default='model.ckpt-1562.meta')
+        parser.add_argument("--batch_size",type=int,default=64)
+        parser.add_argument("--num_monte_carlo",type=int,default=200)
+        parser.add_argument("--thres_val",type=float,default=10.0)
+        parser.add_argument("--subtract_pixel_mean",type=bool,default=False)
+        parser.add_argument("--cluster",type=bool,default=False)
+        parser.add_argument("--verbose",type=bool,default=False)
+        parser.add_argument("--plotting",type=bool,default=False)
+        parser.add_argument("--inference",type=bool,default=True)
+        parser.add_argument("--cifar10",type=bool,default=True)
+        parser.add_argument("--name_scope",type=bool,default=False)
+        parser.add_argument("--horovod_used",type=bool,default=False)
     
-    def FlagParser(self):
-        flags.DEFINE_string("data_dir",
-                    default=os.path.join('./results',
-                                         "bayesian_neural_network/data/"),
-                    help="Directory where data is stored (if using real data).")
-        flags.DEFINE_string("model_dir",
-            default='/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/BNN_5BL_Scaling/results/bayesian_VGG_Data_8rank',
-            help="Directory to put the model's fit.")
-        flags.DEFINE_integer("num_monte_carlo", default=200,help="Network draws to compute predictive probabilities.")
-        flags.DEFINE_integer("batch_size", default=64,help="Define the batch size for test data")
-        flags.DEFINE_boolean("subtract_pixel_mean",default=True,help="Boolean for normalizing the images (used for CIFAR10)")
-        flags.DEFINE_bool("fake_data",default=None,help="If true, uses fake data. Defaults to real data.")
-        flags.DEFINE_string("data_path",default="/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/cifar-10-batches-py",help="Path to load data  from directory")
-        flags.DEFINE_integer('num_intra', default=128,help='Intra thread num_intra')
-        flags.DEFINE_integer('num_inter', default=1,help='num_inter')
-        flags.DEFINE_bool('cluster',default=False,help='Define the run in the')
-        flags.DEFINE_integer('kmp_blocktime', default=0,help='KMP BLOCKTIME')
-        flags.DEFINE_string('kmp_affinity', default='granularity=fine,verbose,compact,1,0',help='KMP AFFINITY')
-        flags.DEFINE_bool('Verbose',default=False,help='Verbosre to print extra details about the model')
-        flags.DEFINE_bool('Modify_Weights',default=False,help='Turn on/off the weight modification method Currently supports only second last Layer of VGG-16')
-        flags.DEFINE_bool('Plotting',default=False,help='Turn on/off the plotting')
-        flags.DEFINE_string('model_ckpt',default='model.ckpt-0.meta',help='Checkpoint step to restore the weights')
-        flags.DEFINE_integer('iterations', default=1,help=' Number of iterations to perform')
-        flags.DEFINE_float('Thres_val',default=10.0, help='Value of Threshold to use at restart')
-        flags.DEFINE_bool('Per_Prune',default=False,help='Turn on/off the Percent_Prune')
-        flags.DEFINE_bool('CIFAR10',default=False,help='Data flag to use CIFAR10')
-        flags.DEFINE_bool('MNIST_BIGDATA',default=False,help='Data flag to use MNIST transform data')
 
+        parser.add_argument("--kmp_blocktime",type=int,default=0,required=False)
+        parser.add_argument("--kmp_affinity",type=str,default='granularity=fine,verbose,compact,1,0',required=False)
+        parser.add_argument("--num_intra",type=int,default=128,required=False)
+        parser.add_argument("--num_inter",type=int,default=1,required=False)
+        
 
-        FLAGS = flags.FLAGS
-
-        return FLAGS
-
+        return parser.parse_args()
+    
 
 class PreProcess:
     def __init__(self, FLAGS):
@@ -66,7 +94,7 @@ class PreProcess:
         np.random.seed(6118 + seed_adjustment)
         tf.set_random_seed(1234 + seed_adjustment)
         original_seed = 1092 + seed_adjustment
-        seed = tfd.SeedStream(original_seed, salt="random_beta")
+        seed = tfp.util.SeedStream(original_seed, salt="random_beta")
         #print('Seed Initialized')
         #print("Original_seed:",original_seed,"Seed",seed())
         return seed

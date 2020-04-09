@@ -1,6 +1,10 @@
 import numpy as np
 import tensorflow as tf
-import bprune.src.utils as UT
+from bprune.src.utils import Initialize
+# from absl import flags
+import argparse
+
+# FLAGS = flags.FLAGS
 
 # import bprune.src.utils as UT
 # from  bprune.src.Prune_BNN import *
@@ -10,23 +14,25 @@ import bprune.src.utils as UT
 
 def main(args):
 
+    print(args)
     
-    PreObj = UT.PreProcess(args)
+    # PreObj = UT.PreProcess(args)
 
-    config = PreObj.create_config_proto()
+    # config = PreObj.create_config_proto()
     
-    Seed_set = PreObj.Setup_Seed()
+    # Seed_set = PreObj.Setup_Seed()
 
-    sess = tf.Session(config=config)
+    # sess = tf.Session(config=config)
 
-    # prune_obj = Prune_Model(args,sess,Images,Labels)
-
+    # # prune_obj = Prune_Model(args,sess,Images,Labels)
+    return
     
-
-
 if __name__ == "__main__":
-    init_obj = UT.Initialize()
-    args = init_obj.FlagParser()
+    init_obj = Initialize()
     
-    print(args.flag_values_dict())
-    tf.compat.v1.app.run(main=main(args))
+    # args = init_obj.FlagParser()
+    args = init_obj.ArgParser()
+    
+    print (args.parse_args())
+    # print(args.flag_values_dict())
+    # tf.compat.v1.app.run(main=main(args))

@@ -6,7 +6,8 @@ import tensorflow as tf
 import numpy as np
 import time
 import pickle 
-import src.Viz_Plotting 
+from src.Viz_Plotting import Plot_Viz
+tf.contrib.resampler 
 
 class Prune_Model:
     def __init__(self, FLAGS, Sess, Images, Labels):
@@ -16,8 +17,18 @@ class Prune_Model:
         self.Labels = Labels
         self.Op_Dicts = self.Read_OpsFile()
         self.Layer_Name = self.Read_LayerFile()
+
+        
+        #Initialize the class if horovod is used.
+        if self.FLAGS.horovod_used:
+            import horovod.tensorflow as hvd
+            hvd.init()
+        else:
+            pass
+
         self.graph = self.Load_Model()
-        self.Viz = Viz_Plotting(self.FLAGS) 
+        self.Viz = Plot_Viz(self.FLAGS)
+         
     
     
     def Read_LayerFile(self):
@@ -36,7 +47,9 @@ class Prune_Model:
                 tmp = line.split('/')[-1]
                 if re.search("bias_posterior_loc", tmp):
                     pass
-                elif re.search("batch_normalization",tmp):
+                elif re.search("gamma:0$",tmp):
+                    pass
+                elif re.search("beta:0$",tmp):
                     pass
                 elif re.search("Variable:0",tmp):
                     pass
@@ -54,7 +67,7 @@ class Prune_Model:
 
         
     def Read_OpsFile(self):
-
+        
         Name = []
         label_dist = []
         acc_val = []
@@ -80,7 +93,7 @@ class Prune_Model:
                     label_dist.append(line)
                 
 
-                if self.FLAGS.NameScope: # Some models will use tf.name_scope to define these operations.
+                if self.FLAGS.name_scope: # Some models will use tf.name_scope to define these operations.
                     if re.search('\w/accuracy/value$',line):
                         acc_val.append(line) 
 
@@ -121,13 +134,14 @@ class Prune_Model:
     def Load_Inference_Variable(self):
         Var_Dict = self.Op_Dicts
 
-        x = graph.get_tensor_by_name( Var_Dict['x']+":0" )
-        y = graph.get_tensor_by_name( Var_Dict['y']+":0" )
-  
-        labels_distribution = tf.get_default_graph().get_tensor_by_name( Var_Dict ['label_dist'] +":0") 
+        x = self.graph.get_tensor_by_name( Var_Dict['x']+":0" )
+        y = self.graph.get_tensor_by_name( Var_Dict['y']+":0" )
 
-        Accuracy = graph.get_tensor_by_name( Var_Dict['accuracy_val'] + ":0")
-        update_ops = graph.get_tensor_by_name( Var_Dict['accuracy_up'] + ":0")
+        # tf.get_default_graph()
+        labels_distribution = self.graph.get_tensor_by_name( Var_Dict ['label_dist'] +":0") 
+
+        Accuracy = self.graph.get_tensor_by_name( Var_Dict['accuracy_val'] + ":0")
+        update_ops = self.graph.get_tensor_by_name( Var_Dict['accuracy_up'] + ":0")
 
         return x,y,labels_distribution,Accuracy,update_ops
 
@@ -171,7 +185,7 @@ class Prune_Model:
         return val
 
     
-    def Return_Mean_Sigma_All(self,sess,graph,LayerName_All,FLAGS):
+    def Return_Mean_Sigma_All(self):
         All_Layer_Mean_Std = []
         
         for layer in self.Layer_Name:
@@ -200,7 +214,7 @@ class Prune_Model:
             # Factor of 2 multiplied since each layer has 2 parameter (mu,sigma)
             zero_count = np.count_nonzero(Ratio_modify)*2.0
             Layer_nonZero.append( zero_count )
-            count_nonzeros += np.count_nonzero(zero_count)
+            count_nonzeros += (zero_count)
 
         return count_nonzeros, Layer_nonZero
 
@@ -342,7 +356,7 @@ class Prune_Model:
         end_time_infer = time.time()
 
         Infer_RunTime = (end_time_infer - start_time_infer)
-        print ("{},{},{},{}\n".format(self.FLAGS.Thres_val,Acc,Non_zeros,Infer_RunTime ))
+        print ("{},{},{},{}\n".format(self.FLAGS.thres_val,Acc,Non_zeros,Infer_RunTime ))
 
         mean_probs = np.mean(probs, axis=0)
         heldout_lp = np.mean(np.log(mean_probs[np.arange(mean_probs.shape[0]), self.Labels.flatten()]))
@@ -353,9 +367,9 @@ class Prune_Model:
         ########################################################################################
         # Save Calculations results
         #########################################################################################
-        fname = os.path.join(self.FLAGS.data_dir, ("Run_InferenceMode_{}_Threshold_{}_MC_{}".format(self.FLAGS.Inference,self.FLAGS.Thres_val,self.FLAGS.num_monte_carlo) ) )
+        fname = os.path.join(self.FLAGS.data_dir, ("Run_InferenceMode_{}_Threshold_{}_MC_{}".format(self.FLAGS.inference,self.FLAGS.thres_val,self.FLAGS.num_monte_carlo) ) )
         with open(fname, "wb") as out:
-            pickle.dump([self.Images,self.Labels,probs,heldout_lp,Acc,self.FLAGS.Thres_val,Infer_RunTime,Non_zeros,Layer_nonZero], out)
+            pickle.dump([self.Images,self.Labels,probs,heldout_lp,Acc,self.FLAGS.thres_val,Infer_RunTime,Non_zeros,Layer_nonZero], out)
     
         ## Keep appending the file to generate stats of all runs...
         # File_write = open(os.path.join(FLAGS.data_dir,"Auto_Prune_Heldnat.csv"),'a')
@@ -384,16 +398,17 @@ class Prune_Model:
 
 
     def RunPrune(self):
-        if self.FLAGS.Inference:
+        if self.FLAGS.inference:
             try:
-                assert(self.FLAGS.Thres_val == 0.0)
+                assert(self.FLAGS.thres_val == 0.0)
+                x,y,labels_distribution,Accuracy,update_ops = self.Load_Inference_Variable()
+                Non_zeros_beforePrune,Layer_nonZero_beforePrune = self.Calc_NonZeros()
+                self.Calc_HeldOutLP_Acc(x,y,update_ops,Accuracy,labels_distribution,Non_zeros_beforePrune,Layer_nonZero_beforePrune)
             except AssertionError:
-                print ("Running in Inference Mode...Threshold value should be 0.0 given {}".format(self.FLAGS.Thres_val))
+                print ("Running in Inference Mode...Threshold value should be 0.0 given {}".format(self.FLAGS.thres_val))
                 
             # No modification simiply run the 
-            # Heldout Calculations
-            pass
-
+            # Heldout Calculations          
         else:
             
             #
@@ -405,7 +420,7 @@ class Prune_Model:
     
             # Modify the weight and run 
             # Heldout Calculations
-            init_Thres = self.FLAGS.Thres_val
+            init_Thres = self.FLAGS.thres_val
             Index_All = []
             Modified_Ratio_All = []
             
@@ -433,4 +448,4 @@ class Prune_Model:
             Non_zeros,Layer_nonZero = self.Calc_NonZeros_V2(self.Layer_Name,Modified_Ratio_All)
             print ('% Prune {}'.format( 100.0 * (1 - (Non_zeros / Non_zeros_beforePrune) ) ) )
             
-            Calc_HeldOutLP_Acc(x,y,update_ops,Accuracy,labels_distribution,Non_zeros,Layer_nonZero)
+            self.Calc_HeldOutLP_Acc(x,y,update_ops,Accuracy,labels_distribution,Non_zeros,Layer_nonZero)
