@@ -6,7 +6,7 @@ import tensorflow as tf
 import numpy as np
 import time
 import pickle 
-from src.Viz_Plotting import Plot_Viz
+from bprune.src.Viz_Plotting import Plot_Viz
 tf.contrib.resampler 
 
 class Prune_Model:
@@ -258,7 +258,7 @@ class Prune_Model:
         return np.array(Conv_mean),np.array(Conv_std)
     
     
-    def Replace_Weights_Network(self, Sess,layer,New_weights_Mean,New_weights_Std,CHECK=False):
+    def Replace_Weights_Network(self,layer,New_weights_Mean,New_weights_Std,CHECK=False):
         Mean_vals = layer[0] #'dense_flipout'+'/kernel_posterior_loc:0' #layer + '/kernel_posterior_loc:0'
         Std_vals =  layer[1] #'dense_flipout'+'/kernel_posterior_untransformed_scale:0' # layer + '/kernel_posterior_untransformed_scale:0'
 
@@ -370,27 +370,7 @@ class Prune_Model:
         fname = os.path.join(self.FLAGS.data_dir, ("Run_InferenceMode_{}_Threshold_{}_MC_{}".format(self.FLAGS.inference,self.FLAGS.thres_val,self.FLAGS.num_monte_carlo) ) )
         with open(fname, "wb") as out:
             pickle.dump([self.Images,self.Labels,probs,heldout_lp,Acc,self.FLAGS.thres_val,Infer_RunTime,Non_zeros,Layer_nonZero], out)
-    
-        ## Keep appending the file to generate stats of all runs...
-        # File_write = open(os.path.join(FLAGS.data_dir,"Auto_Prune_Heldnat.csv"),'a')
-        # File_write.write('Init_Thresh, {} ,Heldout_lp,{}, Infer_time, {} '.format(init_Thres,heldout_lp,(end_time_infer - start_time_infer)) + '\n')
-        # File_write.close()
 
-        # time_plot = time.time()
-
-        # if FLAGS.Plotting:
-        #   if HAS_SEABORN:
-        #     plot_heldout_prediction(Image,Label,probs,fname=os.path.join(FLAGS.data_dir,"step{:05d}_pred_Modify_weights_{}_Auto.png".format(0,FLAGS.Modify_Weights)),
-        #                                 title="mean heldout logprob {:.2f}".format(heldout_lp))
-        # end_timeplot = time.time()
-        
-        
-        # with open( os.path.join(FLAGS.data_dir,  ("Auto_Inference_timing_Modify_"+str(FLAGS.Modify_Weights)+".log")), 'w') as _out:
-        # _out.write("Inference Time: {} sec".format(end_time_infer - start_time_infer)+"\n")
-        # _out.write(" ... Held-out nats: {:.3f}".format(heldout_lp)+"\n")
-        # _out.write("Time to plot: {}".format((end_timeplot-time_plot))+'\n')
-        # _out.close()
-        
         return
 
 
@@ -399,6 +379,8 @@ class Prune_Model:
 
     def RunPrune(self):
         if self.FLAGS.inference:
+            # No modification simiply run the 
+            # Heldout Calculations
             try:
                 assert(self.FLAGS.thres_val == 0.0)
                 x,y,labels_distribution,Accuracy,update_ops = self.Load_Inference_Variable()
@@ -407,9 +389,8 @@ class Prune_Model:
             except AssertionError:
                 print ("Running in Inference Mode...Threshold value should be 0.0 given {}".format(self.FLAGS.thres_val))
                 
-            # No modification simiply run the 
-            # Heldout Calculations          
-        else:
+                  
+        elif self.FLAGS.prune:
             
             #
             # Pruning Run...... #
@@ -439,7 +420,7 @@ class Prune_Model:
                 Index_All.append(Index)
 
                 # Change the weights in the network....!
-                Replace_Weights_Network(sess,layer,Sparse_Conv_mean,Sparse_Conv_std)
+                self.Replace_Weights_Network(layer,Sparse_Conv_mean,Sparse_Conv_std)
 
                 # Ratio after modifing Weights....
                 _,_,Modify_Ratio = self.Calc_Ratio_mu_sigma(layer)
@@ -449,3 +430,7 @@ class Prune_Model:
             print ('% Prune {}'.format( 100.0 * (1 - (Non_zeros / Non_zeros_beforePrune) ) ) )
             
             self.Calc_HeldOutLP_Acc(x,y,update_ops,Accuracy,labels_distribution,Non_zeros,Layer_nonZero)
+        
+        else:
+            print ('Method not defined...check the input arguments..!')
+            sys.exit()

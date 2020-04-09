@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
-from bprune.src.utils import Initialize
+import src.utils as UT
+import src.Prune_BNN as BP
+
 # from absl import flags
 import argparse
 
@@ -14,25 +16,42 @@ import argparse
 
 def main(args):
 
-    print(args)
+    # print(args.batch_size)
     
-    # PreObj = UT.PreProcess(args)
+    PreObj = UT.PreProcess(args)
 
-    # config = PreObj.create_config_proto()
+    config = PreObj.create_config_proto()
     
-    # Seed_set = PreObj.Setup_Seed()
+    Seed_set = PreObj.Setup_Seed()
 
-    # sess = tf.Session(config=config)
+    # Data loading
+    dataObj = UT.DataAPI(args)
+    
+    (_, _), (x_test, y_test) = dataObj.load_CIFAR10_data()
 
-    # # prune_obj = Prune_Model(args,sess,Images,Labels)
+    test_batch_gen = dataObj.train_input_generator(x_test,y_test)    
+    
+    Images, Labels = next(test_batch_gen)
+
+    Sess = tf.Session(config=config)
+
+
+
+    prune_obj = BP.Prune_Model(args,Sess,Images,Labels)
+
+    ####################################
+    ## Run Prunning....!!
+    ####################################
+    prune_obj.RunPrune()
+
     return
     
 if __name__ == "__main__":
-    init_obj = Initialize()
-    
-    # args = init_obj.FlagParser()
+    init_obj = UT.Initialize()
     args = init_obj.ArgParser()
-    
-    print (args.parse_args())
-    # print(args.flag_values_dict())
-    # tf.compat.v1.app.run(main=main(args))
+    # .parse_args()
+    print ((args))
+    # arg =  args.parse_args()
+    # print(FLAGS.flag_values_dict())
+    main(args)
+    # tf.compat.v1.app.run(main=main, argv=args)

@@ -13,36 +13,6 @@ class Initialize:
         super().__init__()
         
 
-    # def FlagParser(self):
-    #     flags.DEFINE_string("data_dir",
-    #                 default=os.path.join('./results',
-    #                                      "bayesian_neural_network/data/"),
-    #                 help="Directory where data is stored (if using real data).")
-    #     flags.DEFINE_string("model_dir",
-    #         default='/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/BNN_5BL_Scaling/results/bayesian_VGG_Data_8rank',
-    #         help="Directory to put the model's fit.")
-    #     flags.DEFINE_integer("num_monte_carlo", default=200,help="Network draws to compute predictive probabilities.")
-    #     flags.DEFINE_integer("batch_size", default=64,help="Define the batch size for test data")
-    #     flags.DEFINE_boolean("subtract_pixel_mean",default=True,help="Boolean for normalizing the images (used for CIFAR10)")
-    #     flags.DEFINE_bool("fake_data",default=None,help="If true, uses fake data. Defaults to real data.")
-    #     flags.DEFINE_string("data_path",default="/projects/datascience/hsharma/bnn_horovod/TFP_CIFAR10/RunScript/cifar-10-batches-py",help="Path to load data  from directory")
-    #     flags.DEFINE_integer('num_intra', default=128,help='Intra thread num_intra')
-    #     flags.DEFINE_integer('num_inter', default=1,help='num_inter')
-    #     flags.DEFINE_bool('cluster',default=False,help='Define the run in the')
-    #     flags.DEFINE_integer('kmp_blocktime', default=0,help='KMP BLOCKTIME')
-    #     flags.DEFINE_string('kmp_affinity', default='granularity=fine,verbose,compact,1,0',help='KMP AFFINITY')
-    #     flags.DEFINE_bool('Verbose',default=False,help='Verbosre to print extra details about the model')
-    #     flags.DEFINE_bool('Modify_Weights',default=False,help='Turn on/off the weight modification method Currently supports only second last Layer of VGG-16')
-    #     flags.DEFINE_bool('Plotting',default=False,help='Turn on/off the plotting')
-    #     flags.DEFINE_string('model_ckpt',default='model.ckpt-0.meta',help='Checkpoint step to restore the weights')
-    #     flags.DEFINE_integer('iterations', default=1,help=' Number of iterations to perform')
-    #     flags.DEFINE_float('Thres_val',default=10.0, help='Value of Threshold to use at restart')
-    #     flags.DEFINE_bool('Per_Prune',default=False,help='Turn on/off the Percent_Prune')
-    #     flags.DEFINE_bool('CIFAR10',default=False,help='Data flag to use CIFAR10')
-    #     flags.DEFINE_bool('MNIST_BIGDATA',default=False,help='Data flag to use MNIST transform data')
-
-    #     return flags
-
     def ArgParser(self):
         parser = argparse.ArgumentParser(fromfile_prefix_chars='@ArgFile.txt', description="Bayesian neural network using tensorflow_probability")
         
@@ -53,16 +23,15 @@ class Initialize:
         parser.add_argument("--batch_size",type=int,default=64)
         parser.add_argument("--num_monte_carlo",type=int,default=200)
         parser.add_argument("--thres_val",type=float,default=10.0)
-        parser.add_argument("--subtract_pixel_mean",type=bool,default=False)
-        parser.add_argument("--cluster",type=bool,default=False)
-        parser.add_argument("--verbose",type=bool,default=False)
-        parser.add_argument("--plotting",type=bool,default=False)
-        parser.add_argument("--inference",type=bool,default=True)
-        parser.add_argument("--cifar10",type=bool,default=True)
-        parser.add_argument("--name_scope",type=bool,default=False)
-        parser.add_argument("--horovod_used",type=bool,default=False)
-    
-
+        parser.add_argument("--subtract_pixel_mean",action='store_true')
+        parser.add_argument("--cluster",action='store_true')
+        parser.add_argument("--verbose",action='store_true')
+        parser.add_argument("--plotting",action='store_true')
+        parser.add_argument("--inference",action='store_true')
+        parser.add_argument("--prune",action='store_true')
+        parser.add_argument("--cifar10",action='store_true')
+        parser.add_argument("--name_scope",action='store_true')
+        parser.add_argument("--horovod_used",action='store_true')
         parser.add_argument("--kmp_blocktime",type=int,default=0,required=False)
         parser.add_argument("--kmp_affinity",type=str,default='granularity=fine,verbose,compact,1,0',required=False)
         parser.add_argument("--num_intra",type=int,default=128,required=False)
@@ -233,3 +202,29 @@ class DataAPI:
                 yield x_train[index:index + batch_size], np.reshape(y_train[index:index + batch_size], -1),
                 index += batch_size
 
+
+class Graph_Info_Writer:
+    def __init__(self,CaseDir):
+        super().__init__()
+        self.Case_dir = CaseDir
+        self.Graph_Info_Writer()
+    
+    def Graph_Info_Writer(self):
+        # Dump graph Trainable operations and variables.
+        with open( os.path.join(self.Case_dir ,"LayerNames.txt"), 'w') as _out:
+            total_parameters = 0
+            for variable in tf.trainable_variables():
+                this_variable_parameters = np.prod([s for s in variable.shape])
+                total_parameters += this_variable_parameters
+                _out.write("{}\n".format(variable.name))
+            
+            _out.close()
+                
+        # Writing the Name of other operations from the Graph.
+        F_write = open(os.path.join(self.Case_dir,'Ops_name_BNN.txt'),'w')
+        
+        for op in tf.get_default_graph().get_operations():
+            F_write.write(str(op.name)+'\n')
+        F_write.close()
+        
+        return

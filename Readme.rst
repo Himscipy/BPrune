@@ -19,14 +19,25 @@ The BNN's supported by the package are one which uses mean field approximation p
 gaussian to define the priors on the weights. Currently, the pruning threshold is based on 
 the signal to noise ratio thresholding.  
 
+Features:
+---------
+1. Library for performing inference trained Bayesian Neural Network. 
 
+2. Library for performing prunning trained Bayesian Neural Network.
 
-Installation Instruction:
+3. Supports tensorflow and tensorflow_probability based Bayesian Neural Network.
+
+4. Independent to the BNN's learning task, support BNN models for classification & regression.
+
+5. Capabilities of handling BNN's which are trained with distributed training
+   libararies such as horovod.
+
+Installation Instructions:
 --------------------------
 
 - Before installtion ensure that you have a working Tensorflow and Tensorflow probability working environment.  
 
-.. code-block:: bash
+.. code-block:: 
 
    python3.5 install -r requirements.txt
    python3.5 install setup.py
@@ -34,16 +45,60 @@ Installation Instruction:
 
 If you are using a pip installation, simply do
 
-.. code-block:: bash
+.. code-block:: 
 
    python3.5 -m pip install BPrune
 
 
 How to use Bprune?
 ------------------
-- The example can be found in. 
+- Before running the model for inference or for pruning ensure that at the end of 
+  the training script  details about the layer names and operations in the graph are written 
+  as text files.  
 
-Limitations/TODO:
------------------
- - Only support models trained using placeholders.
- - Prunning only for models using Mean Field appoximation for Vatiational Inference. 
+- To achieve this user can use the utlility provided with bprune named as `Graph_Info_Writer`.
+
+- The usage of the utility is described as follows: 
+
+.. code-block::
+
+    import numpy as np
+    import tensorflow as tf
+    :
+    import bprune.src.utils as UT
+
+    #
+    # All the code for training the BNN
+    ...
+    ..
+    ..
+
+    # This path will be used as model_dir path in the argument when running BNN for inference
+    case_dir = path/to/the/casefolder
+    
+    UT.Graph_Info_Writer(case_dir)
+
+- For successful run for bprune following files ('LayerNames.txt', 'Ops_name_BNN.txt') must be present in the 
+  case directory. The above described procedure will ensure these files are written at the end of the BNN training 
+  procedure. 
+
+- Once the required text files are written at the end of training, bprune can be used.
+  The example use case can be found in `example` folder with the package.
+
+- The runtime arguments to a bprune code can be provide using command-line or can be specified using a text file each line stating the argument.
+
+
+
+Limitations/TODO's:
+--------------------
+
+ - Only support models trained using tensorflow placeholders.
+ - Prunning Algo only for models using Mean Field appoximation for Vatiational Inference. 
+
+
+Contact:
+--------
+
+- Himanshu Sharma,Argonne Leadership Computing Facility, himanshu.sharma@anl.gov
+
+- Elise Jennings, Argonne Leadership Computing Facility, ejennings@anl.gov
