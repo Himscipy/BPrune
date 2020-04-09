@@ -1,0 +1,11 @@
+--data_path=/home/hsharma/WORK/Project_BNN/bnn_horovod/TFP_CIFAR10/cifar-10-batches-py
+--data_dir=/home/hsharma/WORK/Project_BNN/Theta_data/bayesian_VGG_Data_8rank/data/
+--model_dir=/home/hsharma/WORK/Project_BNN/Theta_data/bayesian_VGG_Data_8rank/train_logs/
+--model_ckpt=model.ckpt-1562.meta
+--num_monte_carlo=50
+--thres_val=0.02
+--batch_size=64
+--cifar10
+--name_scope
+--horovod_used
+--prune
