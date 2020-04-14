@@ -1,0 +1,8 @@
+--data_path=/home/hsharma/WORK/Project_BNN/Theta_data
+--data_dir=./model/results/result_BNN_Test_iter14000Model_FC_True/data/
+--model_dir=./model/results/result_BNN_Test_iter14000Model_FC_True/checkout
+--model_ckpt=model.ckpt-14000.meta
+--num_monte_carlo=400
+--inference
+--thres_val=0.0
+--batch_size=64

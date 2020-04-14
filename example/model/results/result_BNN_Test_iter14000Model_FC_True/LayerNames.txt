@@ -1,0 +1,9 @@
+den_1/kernel_posterior_loc:0
+den_1/kernel_posterior_untransformed_scale:0
+den_1/bias_posterior_loc:0
+den_2/kernel_posterior_loc:0
+den_2/kernel_posterior_untransformed_scale:0
+den_2/bias_posterior_loc:0
+den_3/kernel_posterior_loc:0
+den_3/kernel_posterior_untransformed_scale:0
+den_3/bias_posterior_loc:0
