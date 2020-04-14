@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
-import src.utils as UT
-import src.Prune_BNN as BP
+import bprune.src.utils as UT
+import bprune.src.Prune_BNN as BP
 
 # from absl import flags
 import argparse
@@ -27,14 +27,13 @@ def main(args):
     # Data loading
     dataObj = UT.DataAPI(args)
     
-    (_, _), (x_test, y_test) = dataObj.load_CIFAR10_data()
+    (_, _), (x_test, y_test) = dataObj.load_MNIST_data()
 
     test_batch_gen = dataObj.train_input_generator(x_test,y_test)    
     
     Images, Labels = next(test_batch_gen)
 
     Sess = tf.Session(config=config)
-
 
 
     prune_obj = BP.Prune_Model(args,Sess,Images,Labels)
@@ -49,9 +48,6 @@ def main(args):
 if __name__ == "__main__":
     init_obj = UT.Initialize()
     args = init_obj.ArgParser()
-    # .parse_args()
     print ((args))
-    # arg =  args.parse_args()
-    # print(FLAGS.flag_values_dict())
     main(args)
-    # tf.compat.v1.app.run(main=main, argv=args)
+   

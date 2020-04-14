@@ -18,7 +18,11 @@ class Prune_Model:
         self.Op_Dicts = self.Read_OpsFile()
         self.Layer_Name = self.Read_LayerFile()
 
-        
+        if not os.path.exists(self.FLAGS.data_dir):
+            os.makedirs(self.FLAGS.data_dir)
+            
+
+
         #Initialize the class if horovod is used.
         if self.FLAGS.horovod_used:
             import horovod.tensorflow as hvd
@@ -33,8 +37,13 @@ class Prune_Model:
     
     def Read_LayerFile(self):
         Layer_Name = []
-        
-        filepath = os.path.join(os.path.dirname(os.path.dirname(self.FLAGS.model_dir)),'LayerNames.txt')
+
+        tmp = self.FLAGS.model_dir.split('/')[-1]    
+        if tmp =='/':
+            filepath = os.path.join(os.path.dirname(os.path.dirname(self.FLAGS.model_dir)),'LayerNames.txt')
+        else:
+            dir_name = self.FLAGS.model_dir+'/'
+            filepath = os.path.join(os.path.dirname(os.path.dirname(dir_name)),'LayerNames.txt')
 
         if not os.path.exists(filepath):
             print ('Layer File not exists.. at {}'.format(filepath))
@@ -72,7 +81,16 @@ class Prune_Model:
         label_dist = []
         acc_val = []
         acc_up = []
-        filepath = os.path.join(os.path.dirname(os.path.dirname(self.FLAGS.model_dir)),'Ops_name_BNN.txt')
+        
+        tmp = self.FLAGS.model_dir.split('/')[-1]    
+        if tmp =='/':
+            filepath = os.path.join(os.path.dirname(os.path.dirname(self.FLAGS.model_dir)),'Ops_name_BNN.txt')
+        else:
+            dir_name = self.FLAGS.model_dir+'/'
+            filepath = os.path.join(os.path.dirname(os.path.dirname(dir_name)),'Ops_name_BNN.txt')
+
+        
+        # filepath = os.path.join(os.path.dirname(os.path.dirname(self.FLAGS.model_dir)),'Ops_name_BNN.txt')
 
         if not os.path.exists(filepath):
             print ('Ops File not exists..at {}'.format(filepath))

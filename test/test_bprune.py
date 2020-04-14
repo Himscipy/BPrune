@@ -19,8 +19,8 @@ def test_parser():
     # print (arg)
     # Arrange 
     # Act 
-    # Assert
-    assert (type (arg.b)
+    # # Assert
+    # assert (type (arg.b)
     
 # def test_ReadLayer(self):
 #     assert ()

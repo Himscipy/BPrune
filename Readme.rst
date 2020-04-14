@@ -39,8 +39,8 @@ Installation Instructions:
 
 .. code-block:: 
 
-   python3.5 install -r requirements.txt
-   python3.5 install setup.py
+   python install -r requirements.txt
+   python install setup.py 
 
 
 If you are using a pip installation, simply do
@@ -50,7 +50,13 @@ If you are using a pip installation, simply do
    python3.5 -m pip install BPrune
 
 
-How to use Bprune?
+- For development of the package following command can be used after git clone.
+
+.. code-block::
+
+    python setup.py develop
+
+Quick Start Guide
 ------------------
 - Before running the model for inference or for pruning ensure that at the end of 
   the training script  details about the layer names and operations in the graph are written 
@@ -85,14 +91,21 @@ How to use Bprune?
 - Once the required text files are written at the end of training, bprune can be used.
   The example use case can be found in `example` folder with the package.
 
-- The runtime arguments to a bprune code can be provide using command-line or can be specified using a text file each line stating the argument.
+- The runtime arguments to a bprune code can be provide using command-line or can be specified using 
+  a text file each line stating the argument.
+  example:
+
+    .. code-block::
+
+        python Prune_BNN_MNIST_Model.py @ArgFilePrune.txt
+
 
 
 
 Limitations/TODO's:
 --------------------
 
- - Only support models trained using tensorflow placeholders.
+ - Only support models trained using tensorflow placeholders for feeding data to the graph.
  - Prunning Algo only for models using Mean Field appoximation for Vatiational Inference. 
 
 
