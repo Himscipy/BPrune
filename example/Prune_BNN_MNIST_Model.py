@@ -15,33 +15,35 @@ import argparse
 
 
 def main(args):
+ 
+    # PreObj = UT.PreProcess(args)
 
-    # print(args.batch_size)
+    # config = PreObj.create_config_proto()
     
-    PreObj = UT.PreProcess(args)
+    # Seed_set = PreObj.Setup_Seed()
 
-    config = PreObj.create_config_proto()
+    # # Data loading
+    # dataObj = UT.DataAPI(args)
     
-    Seed_set = PreObj.Setup_Seed()
+    # (_, _), (x_test, y_test) = dataObj.load_MNIST_data()
 
-    # Data loading
-    dataObj = UT.DataAPI(args)
+    # test_batch_gen = dataObj.train_input_generator(x_test,y_test)    
     
-    (_, _), (x_test, y_test) = dataObj.load_MNIST_data()
+    # Images, Labels = next(test_batch_gen)
 
-    test_batch_gen = dataObj.train_input_generator(x_test,y_test)    
+    # Sess = tf.Session(config=config)
+
+
+    # prune_obj = BP.Prune_Model(args,Sess,Images,Labels)
+
+    # ####################################
+    # ## Run Prunning....!!
+    # ####################################
+    # prune_obj.RunPrune()
+
+
+    PostObj = UT.PostProcess(args)
     
-    Images, Labels = next(test_batch_gen)
-
-    Sess = tf.Session(config=config)
-
-
-    prune_obj = BP.Prune_Model(args,Sess,Images,Labels)
-
-    ####################################
-    ## Run Prunning....!!
-    ####################################
-    prune_obj.RunPrune()
 
     return
     

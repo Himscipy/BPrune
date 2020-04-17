@@ -1,12 +1,15 @@
 import numpy as np
 import tensorflow as tf
 from absl import flags
+import pickle
 import os
+import re
 import argparse
 from tensorflow.python.keras.datasets.cifar import load_batch
 from tensorflow.python.keras import backend as K
 import tensorflow_probability as tfp
 tfd = tfp.distributions
+
 
 class Initialize:
     def __init__(self):
@@ -100,6 +103,8 @@ class DataAPI:
         data_path = self.FLAGS.data_path
 
         feature_set_in =  {
+
+
             'height':  tf.FixedLenSequenceFeature([], tf.int64, allow_missing=True), 
             'width':  tf.FixedLenSequenceFeature([], tf.int64, allow_missing=True), 
             'depth':  tf.FixedLenSequenceFeature([], tf.int64, allow_missing=True), 
@@ -228,3 +233,35 @@ class Graph_Info_Writer:
         F_write.close()
         
         return
+
+class PostProcess:
+    def __init__(self,Flags):
+        self.FLAGS = Flags
+        self.Data = self.Load_Data()
+
+    def Load_Data(self):
+        fnames = self.File_path()
+        assert (len(fnames) == 1), "No Output File found...!!"
+
+        if len(fnames) == 1:
+            with open(fnames[0],'rb') as load:
+                Data = pickle.load(load)  
+        else:
+            Data = []
+            for fname in fnames:
+                with open(fnames,'rb') as load:
+                    data = pickle.load(load)  
+                    Data.append(data)
+
+        return Data
+
+    def File_path(self):
+        path_dir = self.FLAGS.data_dir
+        fnames = []    
+        for Root,dir_,files in os.walk(path_dir):
+            for file_ in files:
+                print (file_)
+                if re.search('Run_InferenceMode_\w',file_):
+                    fnames.append(os.path.join(Root,file_))
+        return fnames
+

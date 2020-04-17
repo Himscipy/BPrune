@@ -11,23 +11,18 @@ import pytest
 
 
 
-
-
-def test_parser():
-    Init = UT.Initialize()    
-    arg = Init.ArgParser()
-    # print (arg)
-    # Arrange 
-    # Act 
-    # # Assert
-    # assert (type (arg.b)
     
 # def test_ReadLayer(self):
-#     assert ()
+#     # Test if the Read Layer had read correct number of Layers.
 
+#     # Test if the Read Layer has read correct names of the Layers.
+#     # out =
+    
+#     # assert (len(out) == )
 
 # def test_ReadOps(self):
-#     assert ()
+    # Test if the 
+    # assert ()
 
 
 # def test_LoadModel(self):
