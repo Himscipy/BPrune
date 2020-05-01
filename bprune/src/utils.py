@@ -264,4 +264,9 @@ class PostProcess:
                 if re.search('Run_InferenceMode_\w',file_):
                     fnames.append(os.path.join(Root,file_))
         return fnames
+    
+    def Save_Prune_Model(self):
+        
+
+        return
 
