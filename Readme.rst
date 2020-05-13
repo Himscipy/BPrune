@@ -112,6 +112,16 @@ Limitations/TODO's:
 Contact:
 --------
 
-- Himanshu Sharma,Argonne Leadership Computing Facility, himanshu.sharma@anl.gov
+- Himanshu Sharma,Argonne Leadership Computing Facility, himanshu.sharma@anl.gov, himanshu90sharma@gmail.com
 
 - Elise Jennings, Argonne Leadership Computing Facility, ejennings@anl.gov
+
+
+
+Ackowledgement:
+---------------
+
+This research used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357. 
+This research was funded in part and used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357. 
+This paper describes objective technical results and analysis. Any subjective views or opinions that might be expressed in the paper do not necessarily represent the views of the U.S. DOE or the United States Government. 
+Declaration of Interests - None. 
