@@ -7,12 +7,13 @@ Bayesian Neural Network Pruning
     :height: 100px
     :alt: alternate text
 
-Description:  
-------------
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License
 
+
+Description:  
+------------
 BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with `tensorflow <https://www.tensorflow.org/>`_ and `tensorflow probability <https://www.tensorflow.org/probability>`_.
 The BNN's supported by the package are one which uses mean field approximation principle of VI i.e uses 
 gaussian to define the priors on the weights. Currently, the pruning threshold is based on 
