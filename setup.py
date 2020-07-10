@@ -3,14 +3,22 @@ try:
 except ImportError:
     from distutils.core import setup
 
+# read the contents of your README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'Readme.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
   name = 'bprune',         
   packages = find_packages(),   
-  version = '0.1',      
+  version = '0.3',      
   license='MIT',
   package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
+  long_description=long_description,
+  long_description_content_typ='text/markdown'
   author = 'Himanshu Sharma',                   # Type in your name
   author_email = 'himanshu90sharma@gmail.com',      # Type in your E-Mail
   url = '',   # Provide either the link to your github or to your website
