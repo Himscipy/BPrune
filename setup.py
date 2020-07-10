@@ -18,7 +18,7 @@ setup(
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
   long_description=long_description,
-  long_description_content_typ='text/markdown'
+  long_description_content_typ='text/markdown',
   author = 'Himanshu Sharma',                   # Type in your name
   author_email = 'himanshu90sharma@gmail.com',      # Type in your E-Mail
   url = '',   # Provide either the link to your github or to your website
