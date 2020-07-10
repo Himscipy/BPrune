@@ -14,10 +14,10 @@ Features:
 ---------
 
 1.  Library for performing inference trained Bayesian Neural Network.
-2.  Library for performing prunning trained Bayesian Neural Network.
-3.  Supports tensorflow and tensorflow\_probability based Bayesian Neural Network.
+2.  Library for performing pruning trained Bayesian Neural Network.
+3.  Supports Tensorflow and Tensorflow\_probability based Bayesian Neural Network.
 4.  Independent to the BNN's learning task, support BNN models for classification & regression.
-5.  Capabilities of handling BNN's which are trained with distributed training libararies such as horovod.
+5.  Capabilities of handling BNN's which are trained with distributed training libraries such as Horovod.
 
 Installation Instructions:
 --------------------------
@@ -48,7 +48,7 @@ Quick Start Guide
 -   To achieve this user can use the utility provided with BPrune named as Graph\_Info\_Writer.
 -   The usage of the utility is described as follows:
 
-    ``` python3
+    ``` python3  
     import numpy as np
     import tensorflow as tf
     :

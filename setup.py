@@ -3,11 +3,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-# read the contents of your README file
-from os import path
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'Readme.md'), encoding='utf-8') as f:
-    long_description = f.read()
 
 setup(
   name = 'bprune',         
@@ -17,13 +12,11 @@ setup(
   package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
-  long_description=long_description,
-  long_description_content_typ='text/markdown',
   author = 'Himanshu Sharma',                   # Type in your name
   author_email = 'himanshu90sharma@gmail.com',      # Type in your E-Mail
-  url = '',   # Provide either the link to your github or to your website
-  download_url = '',    # I explain this later on
-  keywords = ['Neural Network', 'TensorFlow Probability', 'Bayesian'],   # Keywords that define your package best
+  url = 'https://github.com/Himscipy/BPrune/',   # Provide either the link to your github or to your website
+  download_url = '',    # explain this later on
+  keywords = ['Neural Network', 'TensorFlow Probability', 'Bayesian Neural Network', 'Deep Learning'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
           'numpy',
           'scipy',
