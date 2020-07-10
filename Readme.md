@@ -78,15 +78,16 @@ Limitations/TODO's:
 -------------------
 
 > -   Only support models trained using tensorflow placeholders for feeding data to the graph.
-> -   Prunning Algo only for models using Mean Field approximation for Variational Inference.
+> -   Pruning Algorithm for models using other than Mean Field approximation functions for Variational Inference.
+> -   Unit-Test for the functionalities.
 
 Contact:
 --------
 
--   [Himanshu Sharma](https://himscipy.github.io/),himanshu90sharma@gmail.com
--   [Elise Jennings](https://www.ichec.ie/staff/elise-jennings-phd),elise.jennings@ichec.ie
+-   [Himanshu Sharma](https://himscipy.github.io/), himanshu90sharma@gmail.com
+-   [Elise Jennings](https://www.ichec.ie/staff/elise-jennings-phd), elise.jennings@ichec.ie
 
-Ackowledgement:
+Acknowledgement:
 ---------------
 
 This research used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357. This research was funded in part and used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357. This paper describes objective technical results and analysis. Any subjective views or opinions that might be expressed in the paper do not necessarily represent the views of the U.S. DOE or the United States Government. Declaration of Interests - None.
