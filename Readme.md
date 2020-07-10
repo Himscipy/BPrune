@@ -1,7 +1,7 @@
 Bayesian Neural Network Pruning
 ===============================
 
-![image](Logo_Bprune.png%0A%20:width:%20200px%0A%20:align:%20center%0A%20:height:%20100px%0A%20:alt:%20alternate%20text)
+![](Logo_Bprune.png)
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -24,7 +24,7 @@ Installation Instructions:
 
 -   Before installation ensure that you have a working Tensorflow and Tensorflow probability environment.
 
-``` {.sourceCode .python3}
+``` python3
 python3 install -r requirements.txt
 python3 install setup.py 
 ```
@@ -48,29 +48,29 @@ Quick Start Guide
 -   To achieve this user can use the utility provided with BPrune named as Graph\_Info\_Writer.
 -   The usage of the utility is described as follows:
 
-``` {.sourceCode .python3}
-import numpy as np
-import tensorflow as tf
-:
-import bprune.src.utils as UT
+    ``` python3
+    import numpy as np
+    import tensorflow as tf
+    :
+    import bprune.src.utils as UT
 
-#
-# All the code for training the BNN
-...
-..
-..
+    #
+    # All the code for training the BNN
+    ...
+    ..
+    ..
 
-# This path will be used as model_dir path in the argument when running BNN for inference
-case_dir = path/to/the/casefolder
+    # This path will be used as model_dir path in the argument when running BNN for inference
+    case_dir = path/to/the/casefolder
 
-UT.Graph_Info_Writer(case_dir)
-```
+    UT.Graph_Info_Writer(case_dir)
+    ```
 
 -   For successful run of BPrune following files ('LayerNames.txt', 'Ops\_name\_BNN.txt') must be present in the case directory. The above described procedure will ensure these files are written at the end of the BNN training procedure.
 -   Once the required text files are written at the end of training, BPrune can be used. The example use case can be found in example folder with the package.
 -   The runtime arguments to a BPrune code can be provide using command-line or can be specified using a text file each line stating the argument. example:
 
-    > ``` {.sourceCode .shell}
+    > ``` shell
     > python Prune_BNN_MNIST_Model.py @ArgFilePrune.txt
     > ```
 
