@@ -13,7 +13,7 @@ Description:
    :target: https://opensource.org/licenses/MIT
    :alt: License
 
-Bprune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with `tensorflow <https://www.tensorflow.org/>`_ and `tensorflow probability <https://www.tensorflow.org/probability>`_.
+BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with `tensorflow <https://www.tensorflow.org/>`_ and `tensorflow probability <https://www.tensorflow.org/probability>`_.
 The BNN's supported by the package are one which uses mean field approximation principle of VI i.e uses 
 gaussian to define the priors on the weights. Currently, the pruning threshold is based on 
 the signal to noise ratio thresholding.  
@@ -34,26 +34,26 @@ Features:
 Installation Instructions:
 --------------------------
 
-- Before installtion ensure that you have a working Tensorflow and Tensorflow probability working environment.  
+- Before installation ensure that you have a working Tensorflow and Tensorflow probability environment.  
 
-.. code-block:: 
+.. code-block:: python3
 
-   python install -r requirements.txt
-   python install setup.py 
+   python3 install -r requirements.txt
+   python3 install setup.py 
 
 
 If you are using a pip installation, simply do
 
-.. code-block:: 
+.. code-block:: python3
 
-   python3.5 -m pip install BPrune
+   python3 -m pip install BPrune
 
 
 - For development of the package following command can be used after git clone.
 
 .. code-block::
 
-    python setup.py develop
+    python3 setup.py develop
 
 Quick Start Guide
 ------------------
@@ -61,11 +61,11 @@ Quick Start Guide
   the training script  details about the layer names and operations in the graph are written 
   as text files.  
 
-- To achieve this user can use the utlility provided with bprune named as `Graph_Info_Writer`.
+- To achieve this user can use the utility provided with BPrune named as `Graph_Info_Writer`.
 
 - The usage of the utility is described as follows: 
 
-.. code-block::
+.. code-block:: python3
 
     import numpy as np
     import tensorflow as tf
@@ -83,18 +83,18 @@ Quick Start Guide
     
     UT.Graph_Info_Writer(case_dir)
 
-- For successful run for bprune following files ('LayerNames.txt', 'Ops_name_BNN.txt') must be present in the 
+- For successful run of  BPrune following files ('LayerNames.txt', 'Ops_name_BNN.txt') must be present in the 
   case directory. The above described procedure will ensure these files are written at the end of the BNN training 
   procedure. 
 
-- Once the required text files are written at the end of training, bprune can be used.
+- Once the required text files are written at the end of training, BPrune can be used.
   The example use case can be found in `example` folder with the package.
 
-- The runtime arguments to a bprune code can be provide using command-line or can be specified using 
+- The runtime arguments to a BPrune code can be provide using command-line or can be specified using 
   a text file each line stating the argument.
   example:
 
-    .. code-block::
+    .. code-block:: shell
 
         python Prune_BNN_MNIST_Model.py @ArgFilePrune.txt
 
