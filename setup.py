@@ -7,7 +7,7 @@ except ImportError:
 setup(
   name = 'bprune',         
   packages = find_packages(),   
-  version = '0.3',      
+  version = '0.1.0',      
   license='MIT',
   package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
