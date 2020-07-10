@@ -17,7 +17,7 @@ Description:
 BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with `tensorflow <https://www.tensorflow.org/>`_ and `tensorflow probability <https://www.tensorflow.org/probability>`_.
 The BNN's supported by the package are one which uses mean field approximation principle of VI i.e uses 
 gaussian to define the priors on the weights. Currently, the pruning threshold is based on 
-the signal to noise ratio thresholding.  
+the signal to noise ratio threshold.  
 
 Features:
 ---------
@@ -106,15 +106,15 @@ Limitations/TODO's:
 --------------------
 
  - Only support models trained using tensorflow placeholders for feeding data to the graph.
- - Prunning Algo only for models using Mean Field appoximation for Vatiational Inference. 
+ - Prunning Algo only for models using Mean Field approximation for Variational Inference. 
 
 
 Contact:
 --------
 
-- [Himanshu Sharma](https://himscipy.github.io/),himanshu90sharma@gmail.com
+- `Himanshu Sharma <https://himscipy.github.io/>`_,himanshu90sharma@gmail.com
 
-- [Elise Jennings](https://www.ichec.ie/staff/elise-jennings-phd),elise.jennings@ichec.ie
+- `Elise Jennings <https://www.ichec.ie/staff/elise-jennings-phd>`_,elise.jennings@ichec.ie
 
 
 
