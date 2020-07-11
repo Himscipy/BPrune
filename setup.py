@@ -1,18 +1,29 @@
+import io 
+import os
 try:
     from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
-def readme():
-    with open('Readme.md') as f:
-        return f.read()
+
+DESCRIPTION = "BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with tensorflow and tensorflow probability."
+
+here = os.path.abspath(os.path.dirname(__file__))
+# Import the README and use it as the long-description.
+# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
+try:
+    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+        long_description = "\n" + f.read()
+except FileNotFoundError:
+    long_description = DESCRIPTION
 
 setup(
   name = 'BPrune',         
   packages = find_packages(),   
   version = '0.1.0',      
   license='MIT',
-  long_description=readme(),
+  long_description=long_description,
+  long_description_content_type="text/markdown",
   package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
