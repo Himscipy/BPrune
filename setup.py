@@ -3,12 +3,16 @@ try:
 except ImportError:
     from distutils.core import setup
 
+def readme():
+    with open('Readme.md') as f:
+        return f.read()
 
 setup(
-  name = 'bprune',         
+  name = 'BPrune',         
   packages = find_packages(),   
   version = '0.1.0',      
   license='MIT',
+  long_description=readme(),
   package_data={'bprune': ['src/*.py', 'test/*.py'] },
   include_package_data=True ,       
   description = 'Bayesiean Neural Network Pruning Library',   # Give a short description about your library
@@ -18,6 +22,7 @@ setup(
   download_url = '',    # explain this later on
   keywords = ['Neural Network', 'TensorFlow Probability', 'Bayesian Neural Network', 'Deep Learning'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
+          'markdown',
           'numpy',
           'scipy',
           'pandas',
