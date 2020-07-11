@@ -81,11 +81,30 @@ Limitations/TODO's:
 > -   Pruning Algorithm for models using other than Mean Field approximation functions for Variational Inference.
 > -   Unit-Test for the functionalities.
 
+
+Cite:
+-----
+
+- Bibtex Format(Arxiv):
+   ```
+    @article{sharma2020bayesian,
+    title={Bayesian Neural Networks at Scale: A Performance Analysis and Pruning Study},
+    author={Sharma, Himanshu and Jennings, Elise},
+    journal={arXiv preprint arXiv:2005.11619},
+    year={2020}}
+   ```
+- MLA Format (Arxiv):
+  ```
+    Sharma, Himanshu, and Elise Jennings. "Bayesian Neural Networks at Scale: A Performance Analysis and Pruning Study." arXiv preprint arXiv:2005.11619 (2020).
+  ```
+
 Contact:
 --------
 
 -   [Himanshu Sharma](https://himscipy.github.io/), himanshu90sharma@gmail.com
 -   [Elise Jennings](https://www.ichec.ie/staff/elise-jennings-phd), elise.jennings@ichec.ie
+
+
 
 Acknowledgement:
 ---------------
