@@ -8,14 +8,14 @@ Bayesian Neural Network Pruning
 Description:
 ------------
 
-BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with [tensorflow](https://www.tensorflow.org/) and [tensorflow probability](https://www.tensorflow.org/probability). The BNN's supported by the package are one which uses mean field approximation principle of VI i.e uses gaussian to define the priors on the weights. Currently, the pruning threshold is based on the signal to noise ratio threshold.
+BPrune is developed to perform inference and pruning of Bayesian Neural Networks(BNN) models developed with [Tensorflow](https://www.tensorflow.org/) and [Tensorflow Probability](https://www.tensorflow.org/probability). The BNN's supported by the package are one which uses mean field approximation principle of VI i.e uses gaussian to define the priors on the weights. Currently, the pruning threshold is based on the signal to noise ratio threshold.
 
 Features:
 ---------
 
-1.  Library for performing inference trained Bayesian Neural Network.
-2.  Library for performing pruning trained Bayesian Neural Network.
-3.  Supports Tensorflow and Tensorflow\_probability based Bayesian Neural Network.
+1.  Library for performing inference for trained Bayesian Neural Network (BNN).
+2.  Library for performing pruning trained Bayesian Neural Network(BNN).
+3.  Supports Tensorflow and Tensorflow\_probability based Bayesian Neural Network model architecture.
 4.  Independent to the BNN's learning task, support BNN models for classification & regression.
 5.  Capabilities of handling BNN's which are trained with distributed training libraries such as Horovod.
 
