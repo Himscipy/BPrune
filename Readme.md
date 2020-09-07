@@ -21,13 +21,27 @@ Features:
 
 Installation Instructions:
 --------------------------
+-   **Note**: Tensorflow and Tensorflow Probability environment
+    
+    Following the instructions below you can get the environment setuped.
+    ```
+    conda create --name PyTF
+    conda activate PyTF
+    conda install -c anaconda tensorflow==1.15
+    pip install --upgrade tensorflow-probability==0.8
+    conda install seaborn 
+    ```
 
--   Before installation ensure that you have a working Tensorflow and Tensorflow probability environment.
+-   The PyPI package [link](https://pypi.org/project/BPrune/)
+    ```
+    pip install BPrune
+    ```
 
-``` python3
-python3 install -r requirements.txt
-python3 install setup.py 
-```
+-   The python3 package based installation.
+    ``` python3
+    python3 install -r requirements.txt
+    python3 install setup.py 
+    ```
 
 If you are using a pip installation, simply do
 
