@@ -85,7 +85,7 @@ Limitations/TODO's:
 Cite:
 -----
 
--- MLA Format
+- MLA Format
   ```
   Sharma, H., Jennings, E. Bayesian neural networks at scale: a performance analysis and pruning study. J Supercomput (2020). https://doi.org/10.1007/s11227-020-03401-z
   ```
@@ -95,7 +95,7 @@ Cite:
     @article{sharma2020bayesian,
     title={Bayesian Neural Networks at Scale: A Performance Analysis and Pruning Study},
     author={Sharma, Himanshu and Jennings, Elise},
-    journal={Journal of Super Computing},
+    journal={Journal of Supercomputing},
     doi={10.1007/s11227-020-03401-z},
     year={2020}}
    ```
