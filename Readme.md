@@ -4,6 +4,7 @@ Bayesian Neural Network Pruning
 ![](Logo_Bprune.png)
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![](https://img.shields.io/pypi/dm/BPrune)
 
 Description:
 ------------
